@@ -1,0 +1,13 @@
+{
+    "users" : {
+      "-KtwCTdUVZi8wNzRB3aB" : {
+        "amountOnBank" : "154.74"
+      }
+    },
+    "messages" : {
+        "message1":{
+            "text":"blbl",
+            "user": "kdkdkdkd"
+        }
+    }
+}
