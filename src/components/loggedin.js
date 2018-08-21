@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase, { chatt } from "../firebase";
+import styled from 'styled-components';
 import "../App.css";
 
 class Loggedin extends Component {
@@ -62,17 +63,37 @@ class Loggedin extends Component {
   };
 
   render() {
+
+    const Div = styled.div`
+background-color: white;
+color:black;
+margin: 10px;
+padding: 25px;
+border-radius:10px;
+width: 500px;
+height:180px;
+display:flex;
+flex-direction: column;
+align-items: center;
+`
+const DivWrapper = styled.div`
+display:flex;
+flex-direction: column;
+align-items: center;
+`
       let messages = this.state.messages;
 if(messages){
     messages = messages.map((mess)=>{
         return(
-            <div>
+            <Div>
                 <p>{mess.message}</p>
-                <p >{mess.userdisplay}</p>
-            </div>
+                <p style={{display:"inline", alignSelf:"flex-end",fontSize:"0.8em", marginTop:"auto"}}>{mess.userdisplay}</p>
+            </Div>
         )
     })
 }
+
+
 
 
     return (
@@ -88,7 +109,7 @@ if(messages){
         </form>
       </div>
       <button onClick={this.props.func}>Log out</button>
-      <div>{messages}</div>
+      <DivWrapper>{messages}</DivWrapper>
       </React.Fragment>
     );
   }
