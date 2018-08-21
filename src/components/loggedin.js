@@ -18,7 +18,11 @@ class Loggedin extends Component {
       .ref("messages") // Listen for path /favorites only
       .on("child_added", snapshot => {
         let messages = [...this.state.messages];
-        messages.push(snapshot.val());
+        console.log(snapshot.key);
+        let store = snapshot.val();
+        store.firekey=snapshot.key
+        messages.push(store);
+        console.log(store);
         this.setState({messages});
         // Clone the original state
       }); // Each time child is added
@@ -27,11 +31,12 @@ class Loggedin extends Component {
       .database()
       .ref("messages") // Listen for path /favorites only
       .on("child_removed", snapshot => {
+          console.log(snapshot.key);
         const favo = [...this.state.messages];
         const res = favo.filter((fav)=>{
-          return fav.annonsid !== snapshot.val().annonsid;
+          return fav.firekey != snapshot.key;
         }) 
-        this.setState({favorites:res})
+        this.setState({messages:res})
          //Implement
       }); // Each time ANY value changes
 
@@ -57,10 +62,18 @@ class Loggedin extends Component {
           message: this.state.textarea,
           uid: this.props.user,
           userdisplay: this.props.userdisplay
-        });
+        }).then((snap) => {
+            this.setState({message:snap.key})
+         });
       this.setState({ textarea: "" });
     }
   };
+  onRemove = (e) => {
+    firebase
+    .database()
+    .ref(`/messages/${e.target.value}`)
+    .remove()   
+  }
 
   render() {
 
@@ -86,6 +99,7 @@ if(messages){
     messages = messages.map((mess)=>{
         return(
             <Div>
+                <button onClick={this.onRemove} value={mess.firekey} style={{display:"inline", alignSelf:"flex-end"}}>X</button>
                 <p>{mess.message}</p>
                 <p style={{display:"inline", alignSelf:"flex-end",fontSize:"0.8em", marginTop:"auto"}}>{mess.userdisplay}</p>
             </Div>
